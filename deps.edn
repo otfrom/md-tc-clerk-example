@@ -1,0 +1,18 @@
+{:paths ["src" "resources"]
+ :deps  {org.clojure/clojure         {:mvn/version "1.11.1"}         
+         io.github.nextjournal/clerk {:mvn/version "0.13.842"
+                                      :exclusions  [techascent/tech.ml.dataset]}
+         net.cgrand/xforms           {:mvn/version "0.19.4"}
+         techascent/tech.ml.dataset  {:mvn/version "7.000-beta-29"}
+         scicloj/tablecloth          {:mvn/version "7.000-beta-27"
+                                      :exclusions  [techascent/tech.ml.dataset]}}
+ :aliases
+ {:nextjournal/clerk
+  {:exec-fn   nextjournal.clerk/build!
+   :exec-args {:paths [#_"notebooks/hello_garden.clj"
+                       "notebooks/tc_md_example.clj"]}
+   ;; TODO: add all notebooks you want to have built ☝️
+   ;; if you just want to build one notebook, set `:index`
+
+   ;; optional list of aliases to include in the build
+   :nextjournal.clerk/aliases [:dev]}}}
