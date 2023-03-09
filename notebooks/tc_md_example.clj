@@ -1,6 +1,7 @@
 (ns tc-md-example
   (:require
    [nextjournal.clerk :as clerk]
+   [tech.v3.dataset.print :as p]
    [tablecloth.api :as tc]))
 
 ;;; # Markdown Tables
@@ -20,11 +21,13 @@
 
 ;; This means you can also get data out of a tablecloth/tech.ml dataset
 ;; and format it too.
-(defn md-row [v]
+(defn md-row
+  [v]
   (str "| " (apply str (interpose " | " v)) " |\n"))
 
 
-(defn md-table [{:keys [columns alignment-spec data]}]
+(defn md-table
+  [{:keys [columns alignment-spec data]}]
   (clerk/md
    (apply 
     str
@@ -39,10 +42,18 @@
            (map md-row))
           (tc/rows data :as-maps)))))
 
-(md-table {:columns ["Foo" "Bar" "Baz"]
-           :alignment-spec [":---" ":---:" "---:"]
-           :data (tc/dataset {"Foo" ["foo0" "foo1" "foo2"]
-                              "Bar" ["bar0" "bar1" "bar2"]
-                              "Baz" [12.0 1.00 1.01]})})
+(md-table 
+ {:columns ["Foo" "Bar" "Baz"]
+  :alignment-spec [":---" ":---:" "---:"]
+  :data (tc/dataset {"Foo" ["foo0" "foo1" "foo2"]
+                     "Bar" ["bar0" "bar1" "bar2"]
+                     "Baz" [12.0 1.00 1.01]})})
 
 
+;; You can also use `p/dataset->str` with `{:print-line-policy :markdown}`
+
+(clerk/md 
+ (-> (tc/dataset {"Foo" ["foo0" "foo1" "foo2"]
+                  "Bar" ["bar0" "bar1" "bar2"]
+                  "Baz" [12.0 1.00 1.01]})
+     (p/dataset->str {:print-line-policy :markdown})))
